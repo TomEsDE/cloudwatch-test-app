@@ -45,18 +45,22 @@ const logger = new winston.createLogger({
   ],
 });
 
-// todo - add cloudwatch config to logger
+/**
+ * Cloudwatch Transport -> no credentials needed, the instance IAM role configured to write to cloudwatch
+ */
 const cloudwatchConfig = {
   // default level is info
   logGroupName: process.env.CLOUDWATCH_GROUP_NAME,
-  logStreamName: `${process.env.CLOUDWATCH_GROUP_NAME}-${process.env.AWS_INSTANCE_TYPE}-${process.env.NODE_ENV}`,
-  awsAccessKeyId: process.env.CLOUDWATCH_ACCESS_KEY,
-  awsSecretKey: process.env.CLOUDWATCH_SECRET_ACCESS_KEY,
+  logStreamName: `${process.env.CLOUDWATCH_GROUP_NAME}-${process.env.NODE_ENV}`,
+  // awsAccessKeyId: process.env.CLOUDWATCH_ACCESS_KEY,
+  // awsSecretKey: process.env.CLOUDWATCH_SECRET_ACCESS_KEY,
   awsRegion: process.env.CLOUDWATCH_REGION,
   messageFormatter: ({ level, message, additionalInfo }) =>
-    `[${level}] : ${message} \n 📒 Additional Info: ${JSON.stringify(
+    `[${level}] : ${message} ${
       additionalInfo
-    )}}`,
+        ? `\n 📒Additional-Infos: ${JSON.stringify(additionalInfo)}`
+        : ''
+    }`,
 };
 logger.add(new WinstonCloudWatch(cloudwatchConfig));
 

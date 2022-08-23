@@ -35,7 +35,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
   logger.debug('debug GET /');
-  logger.info('info GET /');
+  logger.info('info /w additional Infos GET /', {
+    additionalInfo: { test: { name: 'john', age: 13 } },
+  });
   logger.error('error GET /');
   res.send('Hellooooo World!');
 });
