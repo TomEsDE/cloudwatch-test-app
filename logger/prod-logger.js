@@ -31,7 +31,7 @@ const logger = new winston.createLogger({
       format: combine(timestamp(), logFormat),
     }),
     new winston.transports.File({
-      filename: '/logs/combined.log',
+      filename: './logs/combined.log',
       level: 'info',
       // format: combine(timestamp(), json(), prettyPrint()),
       format: combine(timestamp(), logFormat),
